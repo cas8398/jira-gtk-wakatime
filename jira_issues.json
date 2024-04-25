@@ -1,0 +1,252 @@
+[
+    {
+        "project": "Brosur MTA Lengkap",
+        "id": "BML-6",
+        "title": "Advance search sensitive by text brosur"
+    },
+    {
+        "project": "Hadis Ku",
+        "id": "HK-7",
+        "title": "Koreksi teks dan arab semua hadits"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-50",
+        "title": "Setup new architecture firebase gcm di @notif Cas8398 dan @ads flagodna"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-49",
+        "title": "Setup new way admob untuk int dan video tentang loading video"
+    },
+    {
+        "project": "Brosur MTA Lengkap",
+        "id": "BML-5",
+        "title": "Sama, rukyah"
+    },
+    {
+        "project": "Hadis Ku",
+        "id": "HK-6",
+        "title": "Tambah bab"
+    },
+    {
+        "project": "Brosur MTA Lengkap",
+        "id": "BML-4",
+        "title": "Fix brosur diantara kejadian ahir zaman, brosur belum vertical"
+    },
+    {
+        "project": "Hadis Ku",
+        "id": "HK-5",
+        "title": "Advance searching"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-48",
+        "title": "Ganti gambar usap kepala saat wudlu harusnya 2 tangan"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-47",
+        "title": "Tambah murotal"
+    },
+    {
+        "project": "Sukamo",
+        "id": "SKM-9",
+        "title": "Change level mainkan if correct"
+    },
+    {
+        "project": "Sukamo",
+        "id": "SKM-8",
+        "title": "Popup berhasil, mengalihkan dalam X detik"
+    },
+    {
+        "project": "Sukamo",
+        "id": "SKM-6",
+        "title": "Test json data motivasi, based id with next soal"
+    },
+    {
+        "project": "Sukamo",
+        "id": "SKM-2",
+        "title": "Page mainkan"
+    },
+    {
+        "project": "Hadis Ku",
+        "id": "HK-4",
+        "title": "hadits imam Malik no 1593, skema sanadnya tertukar dg hadits sesudahnya. Hadits no 1593 statusnya seharusnya maqthu munqathi (Maqthu dhaif) sesuai takhrij syekh Salim al Hilali"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-20",
+        "title": "Design UI full Canva"
+    },
+    {
+        "project": "Hadis Ku",
+        "id": "HK-3",
+        "title": "Search mirip brosur mta lengkap"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-46",
+        "title": "Tafsir al quran"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-45",
+        "title": "Video tuntunan wudlu & sholat"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-44",
+        "title": "Fix arab bacaan wudlu poin 8"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-43",
+        "title": "Audio pengajian ustadz sukino dipisah menu"
+    },
+    {
+        "project": "Flagodna web",
+        "id": "FW-3",
+        "title": "Design taste"
+    },
+    {
+        "project": "Flagodna web",
+        "id": "FW-2",
+        "title": "Setup all page from wp"
+    },
+    {
+        "project": "Flagodna web",
+        "id": "FW-1",
+        "title": "Design nuxt"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-13",
+        "title": "Page setting"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-12",
+        "title": "Card tantangan"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-11",
+        "title": "Slide part story"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-10",
+        "title": "All area characters"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-8",
+        "title": "Design XP system"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-7",
+        "title": "Design system poin"
+    },
+    {
+        "project": "Hari Apa Sekarang",
+        "id": "HAS-2",
+        "title": "Sudah ada websitenya : kalender.flagodna.com"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-40",
+        "title": "Update bacaan ta'awud"
+    },
+    {
+        "project": "Brosur MTA Lengkap",
+        "id": "BML-3",
+        "title": "Audio brosur"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-39",
+        "title": "Tafsir alquran jika di klik"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-38",
+        "title": "Tuntunan sholat beserta haditsnya"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-6",
+        "title": "create step"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-37",
+        "title": "Al quran tambah audioa"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-36",
+        "title": "Komentar di alamat cabang"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-35",
+        "title": "Mode landscape otomatis"
+    },
+    {
+        "project": "Hadis Ku",
+        "id": "HK-2",
+        "title": "Perbaikan dari pengguna email ayahe nuhus"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-34",
+        "title": "Suara audio player kecil, saat notification masuk"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-33",
+        "title": "Tampilan beranda"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-32",
+        "title": "Doa meninggal dunia"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-31",
+        "title": "Pencarian quran lite"
+    },
+    {
+        "project": "Brosur MTA Lengkap",
+        "id": "BML-2",
+        "title": "Terahir dibaca, setelah keluar aplikasi brosur dibaca dari awal halaman"
+    },
+    {
+        "project": "Hadis Ku",
+        "id": "HK-1",
+        "title": "Tambahkan penanda terahir baca"
+    },
+    {
+        "project": "Amalanku",
+        "id": "AM-2",
+        "title": "Design bluemap"
+    },
+    {
+        "project": "Amalanku",
+        "id": "AM-1",
+        "title": "Design UI"
+    },
+    {
+        "project": "Brosur MTA Lengkap",
+        "id": "BML-1",
+        "title": "Error sharing pdf"
+    },
+    {
+        "project": "Hari Apa Sekarang",
+        "id": "HAS-1",
+        "title": "Design UI"
+    }
+]
