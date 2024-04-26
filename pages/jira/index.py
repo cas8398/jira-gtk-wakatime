@@ -94,8 +94,8 @@ class JiraPage(Gtk.Box):
         for issue in self.issues:
             # Limit title to 20 characters
             truncated_title = (
-                issue["title"][:40] + "..."
-                if len(issue["title"]) > 40
+                issue["title"][:35] + "..."
+                if len(issue["title"]) > 35
                 else issue["title"]
             )
 
@@ -167,6 +167,7 @@ class JiraPage(Gtk.Box):
                 project=first_project_name,
                 customText=first_issue_title,
             )
+            dialog.parent = self.get_toplevel()
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
                 timeData = dialog.time_data

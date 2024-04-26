@@ -7,7 +7,7 @@ from gi.repository import Gtk, GObject
 
 class PomodoroDialog(Gtk.Dialog):
     def __init__(self, parent, project, customText):
-        super().__init__(title="@" + project, transient_for=parent, flags=0)
+        super().__init__(title="@" + project, flags=Gtk.DialogFlags.MODAL)
 
         # Add custom buttons
         self.back_button = Gtk.Button(label="Cancel")
@@ -89,12 +89,22 @@ class PomodoroDialog(Gtk.Dialog):
     def on_back_button_clicked(self, button):
         # Implement the function to be called when the "Back" button is clicked
         print("Back button clicked")
+
+        # show root window
+        if self.parent:
+            self.parent.deiconify()
+
         # Close the dialog
         self.response(Gtk.ResponseType.CANCEL)
 
     def on_start_button_clicked(self, button):
         # Implement the function to be called when the "Start" button is clicked
         print("Start Podomoro")
+
+        # hide root window
+        if self.parent:
+            self.parent.iconify()
+
         # Start the stopwatch
         self.start_stopwatch()
 
@@ -130,12 +140,17 @@ class PomodoroDialog(Gtk.Dialog):
         # Send TimeData as the response
         self.time_data = TimeData
 
+        # show root window
+        if self.parent:
+            self.parent.deiconify()
+
         # Close the dialog with OK response
         self.response(Gtk.ResponseType.OK)
 
     def on_stop_button_clicked(self, button):
         # Implement the function to be called when the "Stop" button is clicked
         print("Stop Podomoro")
+
         GObject.source_remove(self.timeout_id)
         # Hide the "Finish" and "Stop" buttons
         self.finish_button.set_visible(False)

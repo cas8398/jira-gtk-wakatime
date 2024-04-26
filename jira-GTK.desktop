@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Jira GTK 
+Exec=/bin/bash -c 'cd /home/wayang/Documents/Development/@PY/GTK/jira-gtk-wakatime && python3 setup.py > /home/wayang/Documents/Development/@PY/GTK/jira-gtk-wakatime/output.log 2>&1'
+Type=Application
+Icon=/home/wayang/Documents/Development/@PY/GTK/jira-gtk-wakatime/assets/logo.png
+Categories=Development;
+Terminal=false 

@@ -4,6 +4,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from pages.jira.index import JiraPage
 from pages.wakatime.index import WakatimePage
+from pages.settings.index import SettingsPage
 
 
 class StackWindow(Gtk.Window):
@@ -30,6 +31,10 @@ class StackWindow(Gtk.Window):
         # Add Wakatime page to the stack
         wakatime_page = WakatimePage()
         stack.add_titled(wakatime_page, "wakatime", "Wakatime")
+
+        # Add Wakatime page to the stack
+        setting_page = SettingsPage()
+        stack.add_titled(setting_page, "setting", "Settings")
 
         # Implementation of stack switcher.
         stack_switcher = Gtk.StackSwitcher()
