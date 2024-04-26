@@ -4,9 +4,13 @@ import json
 import os
 from notifypy import Notify
 
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 def load_setting_data():
-    with open("pages/jira/json/setting.json", "r") as file:
+    fix_path = os.path.join(current_dir, "json", "setting.json")
+    with open(fix_path, "r") as file:
         data = json.load(file)
     return data
 
@@ -59,7 +63,8 @@ def update_issues():
 
         if selected_issues:
             # Save the selected issues data to a JSON file
-            output_file_path = "pages/jira/json/jira_issues.json"
+            fix_path_save = os.path.join(current_dir, "json", "jira_issues.json")
+            output_file_path = fix_path_save
 
             # Delete the JSON file if it exists
             if os.path.exists(output_file_path):

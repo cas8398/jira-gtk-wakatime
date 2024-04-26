@@ -1,8 +1,12 @@
 import gi
 import json
+import os
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class SettingsPage(Gtk.Box):
@@ -42,7 +46,8 @@ class SettingsPage(Gtk.Box):
         self.pack_start(github_link, False, False, 5)
 
         # Load data from JSON
-        self.load_data_from_json("pages/jira/json/setting.json")
+        fix_path = os.path.join(current_dir, "../../pages/jira/json/setting.json")
+        self.load_data_from_json(fix_path)
 
     def load_data_from_json(self, filename):
         try:
@@ -65,4 +70,5 @@ class SettingsPage(Gtk.Box):
 
     def on_value_edited(self, renderer, path, new_text):
         self.liststore[path][1] = new_text  # Update the value in the liststore
-        self.save_data_to_json("pages/jira/json/setting.json")
+        fix_path = os.path.join(current_dir, "../../pages/jira/json/setting.json")
+        self.save_data_to_json(fix_path)

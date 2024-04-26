@@ -1,5 +1,6 @@
 from gi.repository import Gtk, Gdk
 import json
+import os
 from pages.jira.file_monitor import setup_file_monitor
 from pages.jira.jira_assign import change_assign_status
 from pages.jira.jira_issue import update_issues
@@ -26,6 +27,9 @@ button:hover {
 """
 
 css_provider.load_from_data(css_data.encode())
+
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class JiraPage(Gtk.Box):
@@ -77,8 +81,9 @@ class JiraPage(Gtk.Box):
         )
 
     def load_issues_from_file(self):
-        # Load data from JSON file
-        with open("pages/jira/json/jira_issues.json", "r") as f:
+        # Set the icon for the application
+        fix_path = os.path.join(current_dir, "json", "jira_issues.json")
+        with open(fix_path, "r") as f:
             self.issues = json.load(f)
 
     def call_api(self):

@@ -1,4 +1,5 @@
 import gi
+import os
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -7,11 +8,16 @@ from pages.wakatime.index import WakatimePage
 from pages.settings.index import SettingsPage
 
 
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+
 class StackWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Jira GTK Wakatime")
         # Set the icon for the application
-        self.set_icon_from_file("assets/logo.png")
+        icon_path = os.path.join(current_dir, "assets", "logo.png")
+        self.set_icon_from_file(icon_path)
         self.set_border_width(10)
         self.set_default_size(300, 300)
         # Lock the window size

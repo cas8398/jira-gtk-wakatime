@@ -1,12 +1,17 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+import os
 from notifypy import Notify
 from pages.jira.jira_desc import change_issue_desc
 
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 def load_setting_data():
-    with open("pages/jira/json/setting.json", "r") as file:
+    fix_path = os.path.join(current_dir, "json", "setting.json")
+    with open(fix_path, "r") as file:
         data = json.load(file)
     return data
 

@@ -1,6 +1,11 @@
 import json
+import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+
+
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class JiraFileEventHandler(FileSystemEventHandler):
@@ -17,6 +22,8 @@ class JiraFileEventHandler(FileSystemEventHandler):
 def setup_file_monitor(callback):
     event_handler = JiraFileEventHandler(callback)
     observer = Observer()
-    observer.schedule(event_handler, path="pages/jira/json/", recursive=False)
+    # Set the icon for the application
+    fix_path = os.path.join(current_dir, "json")
+    observer.schedule(event_handler, path=fix_path, recursive=False)
     observer.start()
     # print("File monitor setup complete")
