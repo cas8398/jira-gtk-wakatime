@@ -5,12 +5,26 @@ from notifypy import Notify
 from pages.jira.jira_done import change_issue_done
 
 
+def load_setting_data():
+    with open("pages/jira/json/setting.json", "r") as file:
+        data = json.load(file)
+    return data
+
+
 def change_issue_desc(issue_key, issue_title, update):
-    url = "https://cas8398.atlassian.net/rest/api/2/issue/" + issue_key
+    # Load data from the file
+    data = load_setting_data()
 
-    api_token = "ATATT3xFfGF0Ppa8IKI4B4gIW4bewnDOMZJtW0E_b0vq9AtqEl1Xnboquk9uH1idBp2TSoITzRdy4VvDO0kHiMbBgqZhZQ69mYrjxa_S1zroEKE_xYP1jZqVW9dePeLrr30ozGNDPLN5ZlJAN5UsxyDeC6d6LW7XrDNR4iwOaWJotIjcIjFLWx8=BFCDB504"
+    # Extract the value corresponding to the "jira_url" key
+    jira_url = next((item["jira_url"] for item in data if "jira_url" in item), None)
+    jira_email = next((item["email"] for item in data if "email" in item), None)
+    jira_token = next(
+        (item["jira_token"] for item in data if "jira_token" in item), None
+    )
 
-    auth = HTTPBasicAuth("cas8398@gmail.com", api_token)
+    # Start API
+    url = f"https://{jira_url}/rest/api/2/issue/" + issue_key
+    auth = HTTPBasicAuth(jira_email, jira_token)
 
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 

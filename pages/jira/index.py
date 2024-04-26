@@ -144,6 +144,16 @@ class JiraPage(Gtk.Box):
         else:
             print("No issues in the list")
 
+            # alert
+            dialog = Gtk.MessageDialog(
+                flags=0,
+                message_type=Gtk.MessageType.OTHER,
+                buttons=Gtk.ButtonsType.OK,
+                text="Select Issue First",
+            )
+            dialog.run()
+            dialog.destroy()
+
     def on_center_button_clicked(self, widget):
         print("Reload List button clicked.")
         update_issues()
@@ -178,3 +188,13 @@ class JiraPage(Gtk.Box):
 
         else:
             print("No issues in the list")
+
+            # alert
+            dialog = Gtk.MessageDialog(
+                flags=0,
+                message_type=Gtk.MessageType.OTHER,
+                buttons=Gtk.ButtonsType.OK,
+                text="Select Issue First",
+            )
+            dialog.run()
+            dialog.destroy()
