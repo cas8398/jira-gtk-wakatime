@@ -2,17 +2,17 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-from jira_page import JiraPage
-from wakatime_page import WakatimePage
+from pages.jira.index import JiraPage
+from pages.wakatime.index import WakatimePage
 
 
 class StackWindow(Gtk.Window):
     def __init__(self):
-        Gtk.Window.__init__(self, title="Pomodoro")
+        Gtk.Window.__init__(self, title="Jira GTK Wakatime")
         # Set the icon for the application
-        self.set_icon_from_file("logo.png")
+        self.set_icon_from_file("assets/logo.png")
         self.set_border_width(10)
-        self.set_default_size(500, 300)
+        self.set_default_size(300, 300)
 
         # Creating a box vertically oriented with a space of 100 pixel.
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)

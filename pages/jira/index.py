@@ -1,8 +1,9 @@
-import subprocess
-from gi.repository import Gtk, Gdk, Gio
+from gi.repository import Gtk, Gdk
 import json
-import sys
-from notifypy import Notify
+from pages.jira.file_monitor import setup_file_monitor
+from pages.jira.jira_assign import change_assign_status
+from pages.jira.jira_issue import update_issues
+from pages.jira.pomodoro import PomodoroDialog
 
 css_provider = Gtk.CssProvider()
 
@@ -16,6 +17,9 @@ css_data = """
 #right-button:hover {
     background-color: #4287f5;
 }
+#large-font {
+    font-size : 48px
+}
 """
 
 css_provider.load_from_data(css_data.encode())
@@ -25,6 +29,7 @@ class JiraPage(Gtk.Box):
     def __init__(self):
         # Initialize your class as before...
         self.selected_issues = {}
+        setup_file_monitor(self.call_api)
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=10)
         todoist_scrolled_window = Gtk.ScrolledWindow()
         todoist_scrolled_window.set_policy(
@@ -41,7 +46,7 @@ class JiraPage(Gtk.Box):
         # Create left, center, and right buttons
         left_button = Gtk.Button(label="Finish Issue")
         center_button = Gtk.Button(label="Reload List")
-        right_button = Gtk.Button(label="Start Podomoro")
+        right_button = Gtk.Button(label="Podomoro")
 
         # apply CSS
         left_button.set_name("left-button")  # Add a name for the CSS selector
@@ -70,21 +75,42 @@ class JiraPage(Gtk.Box):
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
         )
 
-    def call_api(self):
+    def load_issues_from_file(self):
         # Load data from JSON file
-        with open("jira_issues.json", "r") as f:
-            issues = json.load(f)
-        # Display the issues in the todoist_box
-        for issue in issues:
+        with open("pages/jira/json/jira_issues.json", "r") as f:
+            self.issues = json.load(f)
+
+    def call_api(self):
+        print("Reloading list of issues...")
+
+        # Reload JSON data from the file
+        self.load_issues_from_file()
+
+        # Clear existing widgets from todoist_box
+        for widget in self.todoist_box.get_children():
+            self.todoist_box.remove(widget)
+
+        # Display each issue in the todoist_box
+        for issue in self.issues:
             # Limit title to 20 characters
             truncated_title = (
-                issue["title"][:75] + "..."
-                if len(issue["title"]) > 75
+                issue["title"][:40] + "..."
+                if len(issue["title"]) > 40
                 else issue["title"]
             )
+
             issue_check_button = Gtk.CheckButton(issue["id"] + " - " + truncated_title)
             issue_check_button.connect("toggled", self.on_check_button_toggled, issue)
+            self.set_tooltip(issue_check_button, issue)
             self.todoist_box.pack_start(issue_check_button, False, False, 0)
+
+        # Redraw the UI
+        self.show_all()
+
+    # tooltips
+    def set_tooltip(self, widget, issue):
+        tooltip_texts = f"{issue['title']}"
+        widget.set_tooltip_text(tooltip_texts)
 
     def on_check_button_toggled(self, button, issue):
         if button.get_active():
@@ -95,22 +121,59 @@ class JiraPage(Gtk.Box):
             if issue["id"] in self.selected_issues:
                 del self.selected_issues[issue["id"]]
 
+        # Convert the dictionary of selected issues to JSON-like structure and print it
+        """
+        print(
+            "Selected issues:",
+            json.dumps(list(self.selected_issues.values()), indent=2),
+        )
+        """
+
     def on_left_button_clicked(self, widget):
-        print("Finish Issue button clicked.")
-        # print(self.selected_issues)
+        listIssues = json.dumps(list(self.selected_issues.values()), indent=2)
+        # Convert the JSON string back to Python objects
+        issues_list = json.loads(listIssues)
 
-        # Display desktop notification
-        notification = Notify()
-        notification.title = "Cool Title"
-        notification.message = "Even cooler message."
-        notification.icon = "logo.png"
-        notification.audio = "notif.wav"
+        # Access the id of the first item in the list
+        if issues_list:
+            first_issue_id = issues_list[0]["id"]
+            first_issue_title = issues_list[0]["title"]
 
-        notification.send()
+            change_assign_status(first_issue_id, first_issue_title)
+
+        else:
+            print("No issues in the list")
 
     def on_center_button_clicked(self, widget):
         print("Reload List button clicked.")
-        subprocess.run([sys.executable, "jira_issue.py"])
+        update_issues()
 
-    def on_right_button_clicked(self, widget):
-        print("Start Podomoro button clicked.")
+    def on_right_button_clicked(
+        self,
+        widget,
+    ):
+        listIssues = json.dumps(list(self.selected_issues.values()), indent=2)
+        # Convert the JSON string back to Python objects
+        issues_list = json.loads(listIssues)
+
+        # Access the id of the first item in the list
+        if issues_list:
+            first_project_name = issues_list[0]["project"]
+            first_issue_title = issues_list[0]["title"]
+            first_issue_id = issues_list[0]["id"]
+
+            dialog = PomodoroDialog(
+                self.get_toplevel(),
+                project=first_project_name,
+                customText=first_issue_title,
+            )
+            response = dialog.run()
+            if response == Gtk.ResponseType.OK:
+                timeData = dialog.time_data
+                change_assign_status(first_issue_id, first_issue_title, timeData)
+                dialog.destroy()
+            else:
+                dialog.destroy()
+
+        else:
+            print("No issues in the list")
