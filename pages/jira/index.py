@@ -3,22 +3,25 @@ import json
 from pages.jira.file_monitor import setup_file_monitor
 from pages.jira.jira_assign import change_assign_status
 from pages.jira.jira_issue import update_issues
-from pages.jira.pomodoro import PomodoroDialog
+from pages.jira.podomoro import PodomoroDialog
 
 css_provider = Gtk.CssProvider()
 
 css_data = """
 #left-button:hover {
-    background-color: #34c73e;
+    background-color: #f78104;
 }
 #center-button:hover {
-    background-color: #8235db;
+    background-color: #e05780;
 }
 #right-button:hover {
-    background-color: #4287f5;
+    background-color: #8ac926;
 }
 #large-font {
     font-size : 48px
+} 
+button:hover {
+    background-color: #249ea0;  
 }
 """
 
@@ -31,17 +34,15 @@ class JiraPage(Gtk.Box):
         self.selected_issues = {}
         setup_file_monitor(self.call_api)
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        todoist_scrolled_window = Gtk.ScrolledWindow()
-        todoist_scrolled_window.set_policy(
-            Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC
-        )
+        jira_scrolled_window = Gtk.ScrolledWindow()
+        jira_scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
-        todoist_scrolled_window.set_max_content_height(700)
+        jira_scrolled_window.set_max_content_height(700)
 
         # Set a large maximum height
-        self.todoist_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        todoist_scrolled_window.add(self.todoist_box)
-        self.pack_start(todoist_scrolled_window, True, True, 0)
+        self.jira_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        jira_scrolled_window.add(self.jira_box)
+        self.pack_start(jira_scrolled_window, True, True, 0)
 
         # Create left, center, and right buttons
         left_button = Gtk.Button(label="Finish Issue")
@@ -86,11 +87,11 @@ class JiraPage(Gtk.Box):
         # Reload JSON data from the file
         self.load_issues_from_file()
 
-        # Clear existing widgets from todoist_box
-        for widget in self.todoist_box.get_children():
-            self.todoist_box.remove(widget)
+        # Clear existing widgets from jira_box
+        for widget in self.jira_box.get_children():
+            self.jira_box.remove(widget)
 
-        # Display each issue in the todoist_box
+        # Display each issue in the jira_box
         for issue in self.issues:
             # Limit title to 20 characters
             truncated_title = (
@@ -102,14 +103,14 @@ class JiraPage(Gtk.Box):
             issue_check_button = Gtk.CheckButton(issue["id"] + " - " + truncated_title)
             issue_check_button.connect("toggled", self.on_check_button_toggled, issue)
             self.set_tooltip(issue_check_button, issue)
-            self.todoist_box.pack_start(issue_check_button, False, False, 0)
+            self.jira_box.pack_start(issue_check_button, False, False, 0)
 
         # Redraw the UI
         self.show_all()
 
     # tooltips
     def set_tooltip(self, widget, issue):
-        tooltip_texts = f"{issue['title']}"
+        tooltip_texts = f"@{issue['project']} \n =>{issue['title']}"
         widget.set_tooltip_text(tooltip_texts)
 
     def on_check_button_toggled(self, button, issue):
@@ -139,7 +140,7 @@ class JiraPage(Gtk.Box):
             first_issue_id = issues_list[0]["id"]
             first_issue_title = issues_list[0]["title"]
 
-            change_assign_status(first_issue_id, first_issue_title)
+            change_assign_status(first_issue_id, first_issue_title, "")
 
         else:
             print("No issues in the list")
@@ -172,7 +173,7 @@ class JiraPage(Gtk.Box):
             first_issue_title = issues_list[0]["title"]
             first_issue_id = issues_list[0]["id"]
 
-            dialog = PomodoroDialog(
+            dialog = PodomoroDialog(
                 self.get_toplevel(),
                 project=first_project_name,
                 customText=first_issue_title,

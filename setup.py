@@ -14,6 +14,8 @@ class StackWindow(Gtk.Window):
         self.set_icon_from_file("assets/logo.png")
         self.set_border_width(10)
         self.set_default_size(300, 300)
+        # Lock the window size
+        self.set_resizable(False)
 
         # Creating a box vertically oriented with a space of 100 pixel.
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)

@@ -24,6 +24,12 @@ def change_assign_status(issue_key, issue_title, timeData):
     jira_accountId = next(
         (item["accountId"] for item in data if "accountId" in item), None
     )
+    jira_desc = (
+        next((item["default_desc"] for item in data if "default_desc" in item), None)
+        if timeData == ""
+        else str(timeData)
+    )
+    print("default_desc:", jira_desc)
 
     # Start API
     url = f"https://{jira_url}/rest/api/2/issue/{issue_key}/assignee"
@@ -43,7 +49,7 @@ def change_assign_status(issue_key, issue_title, timeData):
         print("Issue status updated successfully.")
 
         # run change desc
-        change_issue_desc(issue_key, issue_title, timeData)
+        change_issue_desc(issue_key, issue_title, jira_desc)
 
     except requests.HTTPError as e:
         print(f"Failed to update issue status: {e}")
@@ -51,7 +57,7 @@ def change_assign_status(issue_key, issue_title, timeData):
         # Display desktop notification
         notification = Notify()
         notification.title = "Error Assigned"
-        notification.message = "status: : " + e
+        notification.message = "status: : " + str(e)
         notification.icon = "assets/logo.png"
         notification.audio = "assets/notif.wav"
         notification.send()

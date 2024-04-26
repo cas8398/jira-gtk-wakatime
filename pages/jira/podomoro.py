@@ -5,9 +5,11 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject
 
 
-class PomodoroDialog(Gtk.Dialog):
+class PodomoroDialog(Gtk.Dialog):
     def __init__(self, parent, project, customText):
         super().__init__(title="@" + project, flags=Gtk.DialogFlags.MODAL)
+        # Set icon from file
+        self.set_icon_from_file("assets/logo2.png")
 
         # Add custom buttons
         self.back_button = Gtk.Button(label="Cancel")
@@ -33,14 +35,16 @@ class PomodoroDialog(Gtk.Dialog):
         self.finish_button.set_visible(False)
         self.stop_button.set_visible(False)
 
-        self.set_default_size(200, 100)
+        self.set_default_size(150, 100)
+        # Lock the window size
+        self.set_resizable(False)
 
         # Label Title
         self.title_label = Gtk.Label()
         self.title_label.set_markup(f"issue : {customText}")
         self.title_label.set_justify(Gtk.Justification.CENTER)
         self.title_label.set_line_wrap(True)
-        self.title_label.set_max_width_chars(70)
+        self.title_label.set_max_width_chars(40)
         # Add padding to the left and right
         self.title_label.set_margin_top(3)
         self.title_label.set_margin_left(2)

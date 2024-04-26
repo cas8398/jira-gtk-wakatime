@@ -64,7 +64,7 @@ def change_issue_done(issue_key, issue_title):
         # Display desktop notification
         notification = Notify()
         notification.title = "Error Description"
-        notification.message = "status: : " + e
+        notification.message = "status: : " + str(e)
         notification.icon = "assets/logo.png"
         notification.audio = "assets/notif.wav"
         notification.send()
