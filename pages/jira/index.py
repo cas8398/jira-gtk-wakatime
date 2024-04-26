@@ -115,7 +115,17 @@ class JiraPage(Gtk.Box):
 
     def on_check_button_toggled(self, button, issue):
         if button.get_active():
+            # Uncheck all previously checked buttons
+            for child in self.jira_box.get_children():
+                if (
+                    isinstance(child, Gtk.CheckButton)
+                    and child != button
+                    and child.get_active()
+                ):
+                    child.set_active(False)
             print(f"Issue {issue['id']} checked.")
+            # Add the newly selected issue
+            self.selected_issues.clear()
             self.selected_issues[issue["id"]] = issue
         else:
             print(f"Issue {issue['id']} unchecked.")
@@ -141,6 +151,7 @@ class JiraPage(Gtk.Box):
             first_issue_title = issues_list[0]["title"]
 
             change_assign_status(first_issue_id, first_issue_title, "")
+            self.selected_issues.clear()
 
         else:
             print("No issues in the list")
@@ -183,6 +194,7 @@ class JiraPage(Gtk.Box):
             if response == Gtk.ResponseType.OK:
                 timeData = dialog.time_data
                 change_assign_status(first_issue_id, first_issue_title, timeData)
+                self.selected_issues.clear()
                 dialog.destroy()
             else:
                 dialog.destroy()
