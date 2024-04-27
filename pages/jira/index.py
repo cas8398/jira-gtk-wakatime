@@ -22,6 +22,9 @@ css_data = """
 #large-font {
     font-size : 48px
 } 
+#small-font {
+    font-size : 12px
+} 
 button:hover {
     background-color: #249ea0;  
 }
@@ -49,27 +52,27 @@ class JiraPage(Gtk.Box):
         self.pack_start(jira_scrolled_window, True, True, 0)
 
         # Create left, center, and right buttons
-        left_button = Gtk.Button(label="Finish Issue")
-        center_button = Gtk.Button(label="Sync")
-        center2_button = Gtk.Button(label="Reload")
-        right_button = Gtk.Button(label="Pomodoro")
+        finish_button = Gtk.Button(label="Finish Issue")
+        sync_button = Gtk.Button(label="Sync")
+        reload_button = Gtk.Button(label="Reload")
+        pomodoro_button = Gtk.Button(label="Pomodoro")
 
         # apply CSS
-        left_button.set_name("left-button")  # Add a name for the CSS selector
-        center2_button.set_name("center-button")  # Add a name for the CSS selector
-        right_button.set_name("right-button")  # Add a name for the CSS selector
+        finish_button.set_name("left-button")  # Add a name for the CSS selector
+        reload_button.set_name("center-button")  # Add a name for the CSS selector
+        pomodoro_button.set_name("right-button")  # Add a name for the CSS selector
 
-        left_button.connect("clicked", self.on_left_button_clicked)
-        center_button.connect("clicked", self.reload_list)
-        center2_button.connect("clicked", self.on_center_button_clicked)
-        right_button.connect("clicked", self.on_right_button_clicked)
+        finish_button.connect("clicked", self.on_left_button_clicked)
+        sync_button.connect("clicked", self.reload_list)
+        reload_button.connect("clicked", self.on_center_button_clicked)
+        pomodoro_button.connect("clicked", self.on_right_button_clicked)
 
         # Pack buttons into a horizontal box
         button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        button_box.pack_start(left_button, False, False, 0)
-        button_box.pack_start(center_button, False, False, 0)
-        button_box.pack_start(center2_button, False, False, 0)
-        button_box.pack_end(right_button, False, False, 0)
+        button_box.pack_start(sync_button, False, False, 0)
+        button_box.pack_start(pomodoro_button, False, False, 0)
+        button_box.pack_start(reload_button, False, False, 0)
+        button_box.pack_end(finish_button, False, False, 0)
         self.pack_start(button_box, False, False, 0)
 
         # Call API when window loads
@@ -156,7 +159,7 @@ class JiraPage(Gtk.Box):
 
     # tooltips
     def set_tooltip(self, widget, issue):
-        tooltip_texts = f"@{issue['project']} \n =>{issue['title']}"
+        tooltip_texts = f"@{issue['project']} =>{issue['title']}"
         widget.set_tooltip_text(tooltip_texts)
 
     def on_check_button_toggled(self, button, issue):

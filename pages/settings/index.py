@@ -1,12 +1,6 @@
-import gi
-import json
 import os
-
-gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-
-# Get the current directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
+import shelve
 
 
 class SettingsPage(Gtk.Box):
@@ -45,30 +39,69 @@ class SettingsPage(Gtk.Box):
         )
         self.pack_start(github_link, False, False, 5)
 
-        # Load data from JSON
-        fix_path = os.path.join(current_dir, "../../pages/jira/json/setting.json")
-        self.load_data_from_json(fix_path)
+        # Initialize shelve database
+        self.initialize_shelve_database()
 
-    def load_data_from_json(self, filename):
+        # load shelve database
+        self.load_data_from_shelve()
+
+    def load_data_from_shelve(self):
+        # Get the user's home directory
+        home_dir = os.path.expanduser("~")
+
+        # Initialize the shelve database file
+        fix_path_save = os.path.join(home_dir, ".local", "share", "jira_settings_db")
+
         try:
-            with open(filename, "r") as file:
-                data = json.load(file)
-                for item in data:
-                    for key, value in item.items():
-                        self.liststore.append([key, str(value)])
-        except FileNotFoundError:
-            print("File not found.")
-        except json.JSONDecodeError:
-            print("Error decoding JSON.")
+            # Open the shelve database file
+            with shelve.open(fix_path_save, writeback=True) as db:
+                # Iterate over items in the database and add them to the liststore
+                for key, value in db.items():
+                    self.liststore.append([key, str(value)])
+        except Exception as e:
+            print(f"Error loading data from shelve database: {e}")
 
-    def save_data_to_json(self, filename):
-        data = []
-        for row in self.liststore:
-            data.append({row[0]: row[1]})
-        with open(filename, "w") as file:
-            json.dump(data, file)
+    def initialize_shelve_database(self):
+        # Get the user's home directory
+        home_dir = os.path.expanduser("~")
+
+        # Initialize the shelve database file path
+        fix_path_save = os.path.join(home_dir, ".local", "share", "jira_settings_db")
+
+        # Check if the database file already exists
+        if not os.path.exists(fix_path_save):
+            try:
+                # Open the shelve database file
+                with shelve.open(fix_path_save, writeback=True) as db:
+                    # Set the values in the shelve database
+                    db["accountId"] = "change_this"
+                    db["id_done"] = "change_this"
+                    db["default_desc"] = "change_this"
+                    db["email"] = "change_this@gmail.com"
+                    db["jira_url"] = "change_this.atlassian.net"
+                    db["jira_token"] = "change_this"
+            except Exception as e:
+                print(f"Error initializing shelve database: {e}")
+        else:
+            print("Shelve database already exists. Skipping initialization.")
 
     def on_value_edited(self, renderer, path, new_text):
-        self.liststore[path][1] = new_text  # Update the value in the liststore
-        fix_path = os.path.join(current_dir, "../../pages/jira/json/setting.json")
-        self.save_data_to_json(fix_path)
+        # Update the value in the liststore
+        self.liststore[path][1] = new_text
+
+        # Get the key corresponding to the edited row
+        key = self.liststore[path][0]
+
+        # Get the user's home directory
+        home_dir = os.path.expanduser("~")
+
+        # Initialize the shelve database file path
+        fix_path_save = os.path.join(home_dir, ".local", "share", "jira_settings_db")
+
+        try:
+            # Open the shelve database file
+            with shelve.open(fix_path_save, writeback=True) as db:
+                # Update the value in the shelve database
+                db[key] = new_text
+        except Exception as e:
+            print(f"Error updating shelve database: {e}")

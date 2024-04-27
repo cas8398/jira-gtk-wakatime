@@ -2,31 +2,46 @@ import requests
 from requests.auth import HTTPBasicAuth
 from gi.repository import Gtk
 import json
+import shelve
 import os
 from .jira_done import change_issue_done
 from .logging import log_message
 
+
 # Get the current directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-
 def load_setting_data():
-    fix_path = os.path.join(current_dir, "json", "setting.json")
-    with open(fix_path, "r") as file:
-        data = json.load(file)
-    return data
+    # Get the user's home directory
+    home_dir = os.path.expanduser("~")
+
+    # Initialize the shelve database file path
+    fix_path_save = os.path.join(home_dir, ".local", "share", "jira_settings_db")
+
+    try:
+        # Open the shelve database file
+        with shelve.open(fix_path_save) as db:
+            # Create a dictionary-like object to hold the settings data
+            settings_data = {
+                "accountId": db.get("accountId"),
+                "id_done": db.get("id_done"),
+                "default_desc": db.get("default_desc"),
+                "email": db.get("email"),
+                "jira_url": db.get("jira_url"),
+                "jira_token": db.get("jira_token"),
+            }
+            return settings_data
+    except Exception as e:
+        print(f"Error accessing shelve database: {e}")
+        return None
 
 
 def change_issue_desc(issue_key, issue_title, update):
     # Load data from the file
     data = load_setting_data()
 
-    # Extract the value corresponding to the "jira_url" key
-    jira_url = next((item["jira_url"] for item in data if "jira_url" in item), None)
-    jira_email = next((item["email"] for item in data if "email" in item), None)
-    jira_token = next(
-        (item["jira_token"] for item in data if "jira_token" in item), None
-    )
+    # Extract the value corresponding
+    jira_url = data["jira_url"]
+    jira_email = data["email"]
+    jira_token = data["jira_token"]
 
     # Start API
     url = f"https://{jira_url}/rest/api/2/issue/" + issue_key

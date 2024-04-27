@@ -4,7 +4,7 @@ import os
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from pages.jira.index import JiraPage
-from pages.wakatime.index import WakatimePage
+from pages.logs.index import LogesPage
 from pages.settings.index import SettingsPage
 
 
@@ -14,7 +14,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 class StackWindow(Gtk.Window):
     def __init__(self):
-        Gtk.Window.__init__(self, title="Jira GTK Wakatime")
+        Gtk.Window.__init__(self, title="Jira GTK Pomodoro")
         # Set the icon for the application
         icon_path = os.path.join(current_dir, "assets", "logo.png")
         self.set_icon_from_file(icon_path)
@@ -36,11 +36,11 @@ class StackWindow(Gtk.Window):
         todoist_page = JiraPage()
         stack.add_titled(todoist_page, "jira", "Jira Task")
 
-        # Add Wakatime page to the stack
-        wakatime_page = WakatimePage()
-        stack.add_titled(wakatime_page, "wakatime", "Logs")
+        # Add logs page to the stack
+        logs_page = LogesPage()
+        stack.add_titled(logs_page, "logs", "Logs")
 
-        # Add Wakatime page to the stack
+        # Add Settings page to the stack
         setting_page = SettingsPage()
         stack.add_titled(setting_page, "setting", "Settings")
 

@@ -12,7 +12,7 @@ home_dir = os.path.expanduser("~")
 fix_path_save = os.path.join(home_dir, ".local", "share", "logs_db")
 
 
-class WakatimePage(Gtk.Box):
+class LogesPage(Gtk.Box):
     def __init__(self):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=10)
 
