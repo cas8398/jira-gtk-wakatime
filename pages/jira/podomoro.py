@@ -1,15 +1,20 @@
 import gi
+import os
 from datetime import datetime, timedelta
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject
+
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class PodomoroDialog(Gtk.Dialog):
     def __init__(self, parent, project, customText):
         super().__init__(title="@" + project, flags=Gtk.DialogFlags.MODAL)
         # Set icon from file
-        self.set_icon_from_file("assets/logo2.png")
+        fix_path_logo2 = os.path.join(current_dir, "../../assets/logo2.png")
+        self.set_icon_from_file(fix_path_logo2)
 
         # Add custom buttons
         self.back_button = Gtk.Button(label="Cancel")

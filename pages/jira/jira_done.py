@@ -59,8 +59,11 @@ def change_issue_done(issue_key, issue_title):
         notification = Notify()
         notification.title = "Success !"
         notification.message = "issues: " + issue_title
-        notification.icon = "assets/logo.png"
-        notification.audio = "assets/notif.wav"
+        # Set icon from file
+        fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
+        fix_path_wav = os.path.join(current_dir, "../../assets/notif.wav")
+        notification.icon = fix_path_logo
+        notification.audio = fix_path_wav
         notification.send()
 
     except requests.HTTPError as e:
@@ -70,8 +73,11 @@ def change_issue_done(issue_key, issue_title):
         notification = Notify()
         notification.title = "Error Description"
         notification.message = "status: : " + str(e)
-        notification.icon = "assets/logo.png"
-        notification.audio = "assets/error.wav"
+        # Set icon from file
+        fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
+        fix_path_error = os.path.join(current_dir, "../../assets/error.wav")
+        notification.icon = fix_path_logo
+        notification.audio = fix_path_error
         notification.send()
 
 

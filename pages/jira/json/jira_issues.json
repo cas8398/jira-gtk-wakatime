@@ -1,5 +1,155 @@
 [
     {
+        "project": "MTAONE",
+        "id": "MTAONE-90",
+        "title": "Surah 89"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-89",
+        "title": "Surah 88"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-88",
+        "title": "Surah 87"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-87",
+        "title": "Surah 86"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-86",
+        "title": "Surah 85"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-85",
+        "title": "Surah 84"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-84",
+        "title": "Surah 83"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-83",
+        "title": "Surah 82"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-82",
+        "title": "Surah 81"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-81",
+        "title": "Surah 80"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-80",
+        "title": "Surah 20"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-79",
+        "title": "Surah 19"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-78",
+        "title": "Surah 18"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-77",
+        "title": "Surah 17"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-76",
+        "title": "Surah 16"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-75",
+        "title": "Surah 15"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-74",
+        "title": "Surah 14"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-73",
+        "title": "Surah 13"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-72",
+        "title": "Surah 12"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-71",
+        "title": "Surah 11"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-70",
+        "title": "Surah 10"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-69",
+        "title": "Surah 9"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-68",
+        "title": "Surah 8"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-67",
+        "title": "Surah 7"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-66",
+        "title": "Surah 6"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-65",
+        "title": "Surah 5"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-64",
+        "title": "Surah 4"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-63",
+        "title": "Surah 3"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-62",
+        "title": "Surah 2"
+    },
+    {
+        "project": "MTAONE",
+        "id": "MTAONE-61",
+        "title": "Surah 1"
+    },
+    {
         "project": "Brosur MTA Lengkap",
         "id": "BML-6",
         "title": "Advance search sensitive by text brosur"
@@ -98,135 +248,5 @@
         "project": "Flagodna web",
         "id": "FW-1",
         "title": "Design nuxt"
-    },
-    {
-        "project": "Ujang Story",
-        "id": "UJANG-13",
-        "title": "Page setting"
-    },
-    {
-        "project": "Ujang Story",
-        "id": "UJANG-12",
-        "title": "Card tantangan"
-    },
-    {
-        "project": "Ujang Story",
-        "id": "UJANG-11",
-        "title": "Slide part story"
-    },
-    {
-        "project": "Ujang Story",
-        "id": "UJANG-10",
-        "title": "All area characters"
-    },
-    {
-        "project": "Ujang Story",
-        "id": "UJANG-8",
-        "title": "Design XP system"
-    },
-    {
-        "project": "Ujang Story",
-        "id": "UJANG-7",
-        "title": "Design system poin"
-    },
-    {
-        "project": "Hari Apa Sekarang",
-        "id": "HAS-2",
-        "title": "Sudah ada websitenya : kalender.flagodna.com"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-40",
-        "title": "Update bacaan ta'awud"
-    },
-    {
-        "project": "Brosur MTA Lengkap",
-        "id": "BML-3",
-        "title": "Audio brosur"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-39",
-        "title": "Tafsir alquran jika di klik"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-38",
-        "title": "Tuntunan sholat beserta haditsnya"
-    },
-    {
-        "project": "Ujang Story",
-        "id": "UJANG-6",
-        "title": "create step"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-37",
-        "title": "Al quran tambah audioa"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-36",
-        "title": "Komentar di alamat cabang"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-35",
-        "title": "Mode landscape otomatis"
-    },
-    {
-        "project": "Hadis Ku",
-        "id": "HK-2",
-        "title": "Perbaikan dari pengguna email ayahe nuhus"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-34",
-        "title": "Suara audio player kecil, saat notification masuk"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-33",
-        "title": "Tampilan beranda"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-32",
-        "title": "Doa meninggal dunia"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-31",
-        "title": "Pencarian quran lite"
-    },
-    {
-        "project": "Brosur MTA Lengkap",
-        "id": "BML-2",
-        "title": "Terahir dibaca, setelah keluar aplikasi brosur dibaca dari awal halaman"
-    },
-    {
-        "project": "Hadis Ku",
-        "id": "HK-1",
-        "title": "Tambahkan penanda terahir baca"
-    },
-    {
-        "project": "Amalanku",
-        "id": "AM-2",
-        "title": "Design bluemap"
-    },
-    {
-        "project": "Amalanku",
-        "id": "AM-1",
-        "title": "Design UI"
-    },
-    {
-        "project": "Brosur MTA Lengkap",
-        "id": "BML-1",
-        "title": "Error sharing pdf"
-    },
-    {
-        "project": "Hari Apa Sekarang",
-        "id": "HAS-1",
-        "title": "Design UI"
     }
 ]

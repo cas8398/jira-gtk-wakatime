@@ -63,7 +63,7 @@ def update_issues():
 
         if selected_issues:
             # Save the selected issues data to a JSON file
-            fix_path_save = os.path.join(current_dir, "json", "jira_issues.json")
+            fix_path_save = os.path.join(current_dir, "json/jira_issues.json")
             output_file_path = fix_path_save
 
             # Delete the JSON file if it exists
@@ -77,7 +77,8 @@ def update_issues():
             success_notification = Notify()
             success_notification.title = "Reload Issue Success"
             success_notification.message = "Issue list updated successfully"
-            success_notification.icon = "assets/logo.png"
+            fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
+            success_notification.icon = fix_path_logo
             success_notification.send()
 
         else:
@@ -86,7 +87,8 @@ def update_issues():
             empty_notification = Notify()
             empty_notification.title = "Reload Issue Warning"
             empty_notification.message = "Issues not found"
-            empty_notification.icon = "assets/logo.png"
+            fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
+            empty_notification.icon = fix_path_logo
             empty_notification.send()
 
     except requests.RequestException as e:
@@ -97,5 +99,6 @@ def update_issues():
         error_notification = Notify()
         error_notification.title = "Reload Issue Fail"
         error_notification.message = f"Failed to update issue list: {str(e)}"
-        error_notification.icon = "assets/logo.png"
+        fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
+        error_notification.icon = fix_path_logo
         error_notification.send()
