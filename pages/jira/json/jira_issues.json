@@ -1,16 +1,6 @@
 [
     {
         "project": "MTAONE",
-        "id": "MTAONE-90",
-        "title": "Surah 89"
-    },
-    {
-        "project": "MTAONE",
-        "id": "MTAONE-89",
-        "title": "Surah 88"
-    },
-    {
-        "project": "MTAONE",
         "id": "MTAONE-88",
         "title": "Surah 87"
     },
@@ -145,11 +135,6 @@
         "title": "Surah 2"
     },
     {
-        "project": "MTAONE",
-        "id": "MTAONE-61",
-        "title": "Surah 1"
-    },
-    {
         "project": "Brosur MTA Lengkap",
         "id": "BML-6",
         "title": "Advance search sensitive by text brosur"
@@ -248,5 +233,20 @@
         "project": "Flagodna web",
         "id": "FW-1",
         "title": "Design nuxt"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-13",
+        "title": "Page setting"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-12",
+        "title": "Card tantangan"
+    },
+    {
+        "project": "Ujang Story",
+        "id": "UJANG-11",
+        "title": "Slide part story"
     }
 ]

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Jira GTK
-Exec=python3 /usr/share/jira-gtk/main.py
+Exec=sudo python3 /usr/share/jira-gtk/main.py
 Icon=/usr/share/jira-gtk/assets/logo.png
 Terminal=false
 Categories=Office;

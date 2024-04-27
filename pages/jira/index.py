@@ -1,10 +1,11 @@
 from gi.repository import Gtk, Gdk
 import json
 import os
-from pages.jira.file_monitor import setup_file_monitor
-from pages.jira.jira_assign import change_assign_status
-from pages.jira.jira_issue import update_issues
-from pages.jira.podomoro import PodomoroDialog
+import shelve
+from .jira_assign import change_assign_status
+from .jira_issue import update_issues
+from .podomoro import PodomoroDialog
+from .logging import log_message
 
 css_provider = Gtk.CssProvider()
 
@@ -36,7 +37,6 @@ class JiraPage(Gtk.Box):
     def __init__(self):
         # Initialize your class as before...
         self.selected_issues = {}
-        setup_file_monitor(self.call_api)
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=10)
         jira_scrolled_window = Gtk.ScrolledWindow()
         jira_scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -50,22 +50,25 @@ class JiraPage(Gtk.Box):
 
         # Create left, center, and right buttons
         left_button = Gtk.Button(label="Finish Issue")
-        center_button = Gtk.Button(label="Reload List")
-        right_button = Gtk.Button(label="Podomoro")
+        center_button = Gtk.Button(label="Sync")
+        center2_button = Gtk.Button(label="Reload")
+        right_button = Gtk.Button(label="Pomodoro")
 
         # apply CSS
         left_button.set_name("left-button")  # Add a name for the CSS selector
-        center_button.set_name("center-button")  # Add a name for the CSS selector
+        center2_button.set_name("center-button")  # Add a name for the CSS selector
         right_button.set_name("right-button")  # Add a name for the CSS selector
 
         left_button.connect("clicked", self.on_left_button_clicked)
-        center_button.connect("clicked", self.on_center_button_clicked)
+        center_button.connect("clicked", self.reload_list)
+        center2_button.connect("clicked", self.on_center_button_clicked)
         right_button.connect("clicked", self.on_right_button_clicked)
 
         # Pack buttons into a horizontal box
         button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         button_box.pack_start(left_button, False, False, 0)
         button_box.pack_start(center_button, False, False, 0)
+        button_box.pack_start(center2_button, False, False, 0)
         button_box.pack_end(right_button, False, False, 0)
         self.pack_start(button_box, False, False, 0)
 
@@ -80,17 +83,55 @@ class JiraPage(Gtk.Box):
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
         )
 
-    def load_issues_from_file(self):
-        # Set the icon for the application
-        fix_path = os.path.join(current_dir, "json", "jira_issues.json")
-        with open(fix_path, "r") as f:
-            self.issues = json.load(f)
+    def load_issues_from_shelve(self):
+        # Get the user's home directory
+        home_dir = os.path.expanduser("~")
+
+        # Initialize the shelve database file
+        fix_path_save = os.path.join(home_dir, ".local", "share", "jira_issues_db")
+
+        try:
+            # Open the shelve database file
+            with shelve.open(fix_path_save) as db:
+                # Retrieve the selected issues data from the shelve database
+                self.issues = db.get("selected_issues", [])
+        except Exception as e:
+            print(f"Error loading data from Shelve: {e}")
 
     def call_api(self):
+        self.issues = []
         print("Reloading list of issues...")
 
-        # Reload JSON data from the file
-        self.load_issues_from_file()
+        # Reload data from Shelve
+        self.load_issues_from_shelve()
+
+        # Clear existing widgets from jira_box
+        for widget in self.jira_box.get_children():
+            self.jira_box.remove(widget)
+
+        # Display each issue in the jira_box
+        for issue in self.issues:
+            # Limit title to 20 characters
+            truncated_title = (
+                issue["title"][:35] + "..."
+                if len(issue["title"]) > 35
+                else issue["title"]
+            )
+
+            issue_check_button = Gtk.CheckButton(issue["id"] + " - " + truncated_title)
+            issue_check_button.connect("toggled", self.on_check_button_toggled, issue)
+            self.set_tooltip(issue_check_button, issue)
+            self.jira_box.pack_start(issue_check_button, False, False, 0)
+
+        # Redraw the UI
+        self.show_all()
+
+    def reload_list(self, widget):
+        self.issues = []
+        print("Reloading list of issues...")
+
+        # Reload data from Shelve
+        self.load_issues_from_shelve()
 
         # Clear existing widgets from jira_box
         for widget in self.jira_box.get_children():
@@ -160,6 +201,11 @@ class JiraPage(Gtk.Box):
 
         else:
             print("No issues in the list")
+            log_message(
+                log_level="warning",
+                menu_message="finish issue",
+                message="select issue first",
+            )
 
             # alert
             dialog = Gtk.MessageDialog(
@@ -173,6 +219,11 @@ class JiraPage(Gtk.Box):
 
     def on_center_button_clicked(self, widget):
         print("Reload List button clicked.")
+        log_message(
+            log_level="info",
+            menu_message="main page jira",
+            message="list issue reloaded",
+        )
         update_issues()
 
     def on_right_button_clicked(
@@ -198,6 +249,11 @@ class JiraPage(Gtk.Box):
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
                 timeData = dialog.time_data
+                log_message(
+                    log_level="info",
+                    menu_message="pomodoro",
+                    message="try finish pomodoro",
+                )
                 change_assign_status(first_issue_id, first_issue_title, timeData)
                 self.selected_issues.clear()
                 dialog.destroy()
@@ -205,6 +261,11 @@ class JiraPage(Gtk.Box):
                 dialog.destroy()
 
         else:
+            log_message(
+                log_level="warning",
+                menu_message="pomodoro",
+                message="select issue first",
+            )
             print("No issues in the list")
 
             # alert

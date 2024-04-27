@@ -38,7 +38,7 @@ class StackWindow(Gtk.Window):
 
         # Add Wakatime page to the stack
         wakatime_page = WakatimePage()
-        stack.add_titled(wakatime_page, "wakatime", "Wakatime")
+        stack.add_titled(wakatime_page, "wakatime", "Logs")
 
         # Add Wakatime page to the stack
         setting_page = SettingsPage()

@@ -1,29 +1,31 @@
-import json
 import os
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+import shelve
 
 
-# Get the current directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-
-class JiraFileEventHandler(FileSystemEventHandler):
+class JiraFileEventHandler:
     def __init__(self, callback):
-        super().__init__()
         self.callback = callback
+        self.previous_db_state = self.read_db_state()
 
-    def on_modified(self, event):
-        if event.src_path.endswith("jira_issues.json"):
-            print("Detected modification in jira_issues.json")
+    def read_db_state(self):
+        # Get the user's home directory
+        home_dir = os.path.expanduser("~")
+        # Initialize the shelve database file
+        fix_path_save = os.path.join(home_dir, ".local", "share", "jira_issues_db")
+
+        # Open the shelve database file and retrieve its state
+        with shelve.open(fix_path_save) as db:
+            return dict(db)
+
+    def check_for_changes(self):
+        current_db_state = self.read_db_state()
+        print("data change")
+        if current_db_state != self.previous_db_state:
+            self.previous_db_state = current_db_state
             self.callback()
 
 
 def setup_file_monitor(callback):
     event_handler = JiraFileEventHandler(callback)
-    observer = Observer()
-    # Set the icon for the application
-    fix_path = os.path.join(current_dir, "json")
-    observer.schedule(event_handler, path=fix_path, recursive=False)
-    observer.start()
-    # print("File monitor setup complete")
+    event_handler.check_for_changes()
+    print("try watch data")

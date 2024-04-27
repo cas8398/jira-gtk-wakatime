@@ -1,8 +1,10 @@
+import os
+import json
+import shelve
 import requests
 from requests.auth import HTTPBasicAuth
-import json
-import os
-from notifypy import Notify
+from gi.repository import Gtk
+from .logging import log_message
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -16,23 +18,26 @@ def load_setting_data():
 
 
 def update_issues():
-    # Load data from the file
-    data = load_setting_data()
-
-    # Extract the value corresponding to the "jira_url" key
-    jira_url = next((item["jira_url"] for item in data if "jira_url" in item), None)
-    jira_email = next((item["email"] for item in data if "email" in item), None)
-    jira_token = next(
-        (item["jira_token"] for item in data if "jira_token" in item), None
-    )
-
-    # Start API
-    url = f"https://{jira_url}/rest/api/3/search"
-    auth = HTTPBasicAuth(jira_email, jira_token)
-    headers = {"Accept": "application/json"}
-    query = {"jql": 'status != "Done" ORDER BY created'}
-
     try:
+        # Load data from the file
+        data = load_setting_data()
+
+        # Extract the value corresponding to the "jira_url" key
+        jira_url = next((item["jira_url"] for item in data if "jira_url" in item), None)
+        jira_email = next((item["email"] for item in data if "email" in item), None)
+        jira_token = next(
+            (item["jira_token"] for item in data if "jira_token" in item), None
+        )
+
+        # Start API
+        url = f"https://{jira_url}/rest/api/3/search"
+        auth = HTTPBasicAuth(jira_email, jira_token)
+        headers = {"Accept": "application/json"}
+        query = {"jql": 'status != "Done" ORDER BY created'}
+
+        log_message(log_level="info", menu_message="api issue", message=f"try load API")
+
+        # Make a GET request to the Jira API
         response = requests.get(url, headers=headers, params=query, auth=auth)
         response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
 
@@ -62,43 +67,58 @@ def update_issues():
                 selected_issues.append(selected_issue)
 
         if selected_issues:
-            # Save the selected issues data to a JSON file
-            fix_path_save = os.path.join(current_dir, "json/jira_issues.json")
-            output_file_path = fix_path_save
+            # Get the user's home directory
+            home_dir = os.path.expanduser("~")
 
-            # Delete the JSON file if it exists
-            if os.path.exists(output_file_path):
-                os.remove(output_file_path)
+            # Initialize the shelve database file
+            fix_path_save = os.path.join(home_dir, ".local", "share", "jira_issues_db")
 
-            with open(output_file_path, "w") as file:
-                json.dump(selected_issues, file, indent=4)
+            # Save the selected issues data to a shelve database
+            with shelve.open(fix_path_save) as db:
+                db["selected_issues"] = selected_issues
 
-            # Display desktop notification for success
-            success_notification = Notify()
-            success_notification.title = "Reload Issue Success"
-            success_notification.message = "Issue list updated successfully"
-            fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
-            success_notification.icon = fix_path_logo
-            success_notification.send()
+            log_message(
+                log_level="info",
+                menu_message="api issue",
+                message=f"issue success loaded",
+            )
+            # Show error message
+            dialog = Gtk.MessageDialog(
+                flags=0,
+                message_type=Gtk.MessageType.OTHER,
+                buttons=Gtk.ButtonsType.OK,
+                text="info \n issue success loaded",
+            )
+            dialog.run()
+            dialog.destroy()
 
         else:
-            print("No issues found")  # Notify the user in case there are no issues
-            # Display desktop notification for empty issue list
-            empty_notification = Notify()
-            empty_notification.title = "Reload Issue Warning"
-            empty_notification.message = "Issues not found"
-            fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
-            empty_notification.icon = fix_path_logo
-            empty_notification.send()
+            log_message(
+                log_level="warning",
+                menu_message="api issue",
+                message=f"issue list found",
+            )
+            # Show error message
+            dialog = Gtk.MessageDialog(
+                flags=0,
+                message_type=Gtk.MessageType.OTHER,
+                buttons=Gtk.ButtonsType.OK,
+                text="warning \n issue list null",
+            )
+            dialog.run()
+            dialog.destroy()
 
     except requests.RequestException as e:
         # Handle network errors or other request-related issues
-        print("Error:", e)
-
-        # Display desktop notification for failure
-        error_notification = Notify()
-        error_notification.title = "Reload Issue Fail"
-        error_notification.message = f"Failed to update issue list: {str(e)}"
-        fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
-        error_notification.icon = fix_path_logo
-        error_notification.send()
+        error_message = f"Error loading issues from API: {e}"
+        print(error_message)
+        log_message(log_level="error", menu_message="api issue", message=error_message)
+        # Show error message
+        dialog = Gtk.MessageDialog(
+            flags=0,
+            message_type=Gtk.MessageType.OTHER,
+            buttons=Gtk.ButtonsType.OK,
+            text="Error \n loading issues from API",
+        )
+        dialog.run()
+        dialog.destroy()

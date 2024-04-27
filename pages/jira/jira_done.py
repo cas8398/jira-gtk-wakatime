@@ -1,8 +1,10 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+import shelve
 import os
-from notifypy import Notify
+from gi.repository import Gtk
+from .logging import log_message
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +15,34 @@ def load_setting_data():
     with open(fix_path, "r") as file:
         data = json.load(file)
     return data
+
+
+def remove_issue(issue_key):
+    # Get the user's home directory
+    home_dir = os.path.expanduser("~")
+
+    # Initialize the shelve database file
+    fix_path_save = os.path.join(home_dir, ".local", "share", "jira_issues_db")
+
+    try:
+        # Open the shelve database file
+        with shelve.open(fix_path_save, writeback=True) as db:
+            # Get the list of selected issues
+            selected_issues = db.get("selected_issues", [])
+
+            # Filter out the item with the specified ID
+            filtered_issues = [
+                issue for issue in selected_issues if issue.get("id") != str(issue_key)
+            ]
+
+            # Update the database with the filtered issues
+            db["selected_issues"] = filtered_issues
+
+            print(f"Issue with key {issue_key} removed successfully.")
+            return True
+    except Exception as e:
+        print(f"Error removing issue: {e}")
+        return False
 
 
 def change_issue_done(issue_key, issue_title):
@@ -42,43 +72,50 @@ def change_issue_done(issue_key, issue_title):
         )
         response.raise_for_status()  # Raise an exception for HTTP errors
         print("Issue done updated successfully.")
+        log_message(
+            log_level="info",
+            menu_message="finish issue",
+            message=f"{issue_key} _ status : Success",
+        )
 
-        # Read JSON data from file
-        file_path = "pages/jira/json/jira_issues.json"
-        with open(file_path, "r") as file:
-            data = json.load(file)
+        # remove issue
+        remove_issue(issue_key)
 
-        # Filter out the item with the specified ID
-        filtered_data = [issue for issue in data if issue.get("id") != str(issue_key)]
+        dialog = Gtk.MessageDialog(
+            flags=0,
+            message_type=Gtk.MessageType.OTHER,
+            buttons=Gtk.ButtonsType.OK,
+            text="Success ! \n" + "issues: : " + issue_title,
+        )
+        # Connect a callback function to handle the response
+        dialog.connect("response", on_dialog_response)
 
-        # Write the updated data back to the file
-        with open(file_path, "w") as file:
-            json.dump(filtered_data, file, indent=4)
-
-        # Display desktop notification
-        notification = Notify()
-        notification.title = "Success !"
-        notification.message = "issues: " + issue_title
-        # Set icon from file
-        fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
-        fix_path_wav = os.path.join(current_dir, "../../assets/notif.wav")
-        notification.icon = fix_path_logo
-        notification.audio = fix_path_wav
-        notification.send()
+        dialog.run()
+        dialog.destroy()
 
     except requests.HTTPError as e:
         print(f"Failed to update issue status: {e}")
+        log_message(
+            log_level="error",
+            menu_message="finish issue",
+            message=f"{issue_key} _ status : " + str(e),
+        )
 
-        # Display desktop notification
-        notification = Notify()
-        notification.title = "Error Description"
-        notification.message = "status: : " + str(e)
-        # Set icon from file
-        fix_path_logo = os.path.join(current_dir, "../../assets/logo.png")
-        fix_path_error = os.path.join(current_dir, "../../assets/error.wav")
-        notification.icon = fix_path_logo
-        notification.audio = fix_path_error
-        notification.send()
+        # alert
+        dialog = Gtk.MessageDialog(
+            flags=0,
+            message_type=Gtk.MessageType.OTHER,
+            buttons=Gtk.ButtonsType.OK,
+            text="Error Check Done \n" + "status: : " + str(e),
+        )
+        dialog.run()
+        dialog.destroy()
+
+
+def on_dialog_response(self, dialog, response_id):
+    if response_id == Gtk.ResponseType.OK:
+        # Call the reload_data function here
+        print("reloaded.")
 
 
 # Example usage: Change status of issue with key "ABC-123" to "Done"

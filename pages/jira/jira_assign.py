@@ -1,9 +1,10 @@
 import requests
 from requests.auth import HTTPBasicAuth
+from gi.repository import Gtk
 import json
 import os
-from notifypy import Notify
-from pages.jira.jira_desc import change_issue_desc
+from .logging import log_message
+from .jira_desc import change_issue_desc
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -52,20 +53,32 @@ def change_assign_status(issue_key, issue_title, timeData):
         )
         response.raise_for_status()  # Raise an exception for HTTP errors
         print("Issue status updated successfully.")
+        log_message(
+            log_level="info",
+            menu_message="assign issue",
+            message=f"{issue_key} _ status : Success",
+        )
 
         # run change desc
         change_issue_desc(issue_key, issue_title, jira_desc)
 
     except requests.HTTPError as e:
         print(f"Failed to update issue status: {e}")
+        log_message(
+            log_level="error",
+            menu_message="assign issue",
+            message=f"{issue_key} _ status : " + str(e),
+        )
 
-        # Display desktop notification
-        notification = Notify()
-        notification.title = "Error Assigned"
-        notification.message = "status: : " + str(e)
-        notification.icon = "assets/logo.png"
-        notification.audio = "assets/notif.wav"
-        notification.send()
+        # alert
+        dialog = Gtk.MessageDialog(
+            flags=0,
+            message_type=Gtk.MessageType.OTHER,
+            buttons=Gtk.ButtonsType.OK,
+            text="Error Assigned \n" + "status: : " + str(e),
+        )
+        dialog.run()
+        dialog.destroy()
 
 
 # Example usage: Change status of issue with key "ABC-123" to "Done"

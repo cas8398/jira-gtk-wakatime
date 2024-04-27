@@ -35,7 +35,7 @@ class SettingsPage(Gtk.Box):
 
         label = Gtk.Label()
         label.set_markup(
-            "<small>Built with love ❤️ by <a href='https://github.com/cas8398'>@cas8398</a></small> | version : 0.1.2"
+            "<small>Built with love ❤️ by <a href='https://github.com/cas8398'>@cas8398</a> | version : 0.1.2 </small> "
         )
         self.pack_start(label, False, False, 0)
 
