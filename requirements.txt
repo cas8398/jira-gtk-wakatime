@@ -1,6 +1,4 @@
 PyGObject==3.42.1
-
 Requests==2.31.0
-notify-py
-gi
-watchdog
+watchdog==4.0.0
+watchdog==2.1.6
