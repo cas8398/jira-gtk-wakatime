@@ -19,6 +19,6 @@ You can install the Debian package of Jira GTK by following these steps:
 
 ![Screenshot 1](assets/ss1.png)
 
-![Screenshot 1](assets/ss1.png)
+![Screenshot 2](assets/ss2.png)
 
-![Screenshot 1](assets/ss1.png)
+![Screenshot 3](assets/ss3.png)
